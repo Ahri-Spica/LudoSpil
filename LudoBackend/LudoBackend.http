@@ -1,0 +1,6 @@
+@LudoBackend_HostAddress = http://localhost:5182
+
+GET {{LudoBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
