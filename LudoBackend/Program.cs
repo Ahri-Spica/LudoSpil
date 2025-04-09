@@ -1,4 +1,8 @@
 
+using Microsoft.AspNetCore.Http.HttpResults;
+using GameLogic.Board;
+using GameLogic.Board.Models;
+
 namespace LudoBackend
 {
     public class Program
@@ -12,6 +16,8 @@ namespace LudoBackend
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddSingleton<IGameBoardRepo, GameBoardRepo>();
 
             var app = builder.Build();
 
@@ -43,6 +49,37 @@ namespace LudoBackend
                 return forecast;
             })
             .WithName("GetWeatherForecast");*/
+
+            app.MapGet("/api/ludo/gameboard", (string key, IGameBoardRepo repository) =>
+            {
+                 if (repository.TryGetBoard(key, out List<Tile> board))
+                {
+                    return Results.Ok(board);
+                }
+                else
+                {
+                    return Results.NotFound();
+                }
+            })
+                .Produces<List<Tile>>(StatusCodes.Status200OK, "application/json")
+                .Produces(StatusCodes.Status400BadRequest);
+
+            app.MapGet("/diceRoll", () =>
+            {
+                //var diceroll
+                //var calculateMoves(diceroll)
+
+                /*var response = new
+                {
+                    DiceRoll = diceRoll,
+                    Moves = calculateMoves
+                }*/
+
+                //return results.ok(response);
+            })
+                /*.Produces<Result>(StatusCodes.Status200OK, "application/json")
+                .Produces(StatusCodes.Status400BadRequest)*/;
+    
 
             app.Run();
         }
