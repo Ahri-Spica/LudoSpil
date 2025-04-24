@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace GameLogic.Action
 {
-    internal interface IDice
+    public interface IDice
     {
+        int StandardDiceRoll();
     }
 }

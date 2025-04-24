@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using GameLogic.Board;
 using GameLogic.Board.Models;
+using GameLogic.Action;
 
 namespace LudoBackend
 {
@@ -11,17 +12,17 @@ namespace LudoBackend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddAuthorization();
 
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            /*  Modules */
             builder.Services.AddSingleton<IGameBoardRepo, GameBoardRepo>();
+            builder.Services.AddTransient<IDice, Dice>();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
@@ -31,24 +32,8 @@ namespace LudoBackend
 
             app.UseAuthorization();
 
-            /*var summaries = new[]
-            {
-                "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-            };
 
-            app.MapGet("/weatherforecast", (HttpContext httpContext) =>
-            {
-                var forecast = Enumerable.Range(1, 5).Select(index =>
-                    new WeatherForecast
-                    {
-                        Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                        TemperatureC = Random.Shared.Next(-20, 55),
-                        Summary = summaries[Random.Shared.Next(summaries.Length)]
-                    })
-                    .ToArray();
-                return forecast;
-            })
-            .WithName("GetWeatherForecast");*/
+            /*  Endpoints   */
 
             app.MapGet("/api/ludo/gameboard", (string key, IGameBoardRepo repository) =>
             {
@@ -62,11 +47,12 @@ namespace LudoBackend
                 }
             })
                 .Produces<List<Tile>>(StatusCodes.Status200OK, "application/json")
-                .Produces(StatusCodes.Status400BadRequest);
+                .Produces(StatusCodes.Status400BadRequest)
+                .WithName("GetGameboard");
 
-            app.MapGet("/diceRoll", () =>
+            app.MapGet("/diceRoll", (string player, IDice dice /*, IGL gameLogic*/) =>
             {
-                //var diceroll
+                int diceroll = dice.StandardDiceRoll();
                 //var calculateMoves(diceroll)
 
                 /*var response = new
