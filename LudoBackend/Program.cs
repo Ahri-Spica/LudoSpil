@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using GameLogic.Board;
 using GameLogic.Board.Models;
 using GameLogic.Action;
+using GameLogic.Engine;
 
 namespace LudoBackend
 {
@@ -19,6 +20,8 @@ namespace LudoBackend
             /*  Modules */
             builder.Services.AddSingleton<IGameBoardRepo, GameBoardRepo>();
             builder.Services.AddTransient<IDice, Dice>();
+            builder.Services.AddSingleton<IGameManager, GameManager>();
+            builder.Services.AddSingleton<IGameEngine, GameEngine>();
 
             var app = builder.Build();
 
@@ -50,7 +53,7 @@ namespace LudoBackend
                 .Produces(StatusCodes.Status400BadRequest)
                 .WithName("GetGameboard");
 
-            app.MapGet("/diceRoll", (string player, IDice dice /*, IGL gameLogic*/) =>
+            app.MapGet("/api/ludo/diceRoll", (string player, IDice dice /*, IGL gameLogic*/) =>
             {
                 int diceroll = dice.StandardDiceRoll();
                 //var calculateMoves(diceroll)
@@ -61,7 +64,7 @@ namespace LudoBackend
                     Moves = calculateMoves
                 }*/
 
-                //return results.ok(response);
+                //return Results.Ok(response);
             })
                 /*.Produces<Result>(StatusCodes.Status200OK, "application/json")
                 .Produces(StatusCodes.Status400BadRequest)*/;

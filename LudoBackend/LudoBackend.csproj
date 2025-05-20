@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-		<ProjectReference Include="..\GameLogic\Gamelogic.csproj"/>
+		<ProjectReference Include="..\GameLogic\Gamelogic.csproj" />
 	</ItemGroup>
 
 </Project>

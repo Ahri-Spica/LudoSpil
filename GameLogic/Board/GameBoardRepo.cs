@@ -8,10 +8,8 @@ namespace GameLogic.Board
         private readonly Dictionary<string, List<Tile>> Gameboards = new()
         {
             ["standard_board"] = new List<Tile> {
-                new Tile
-                {
-                    //TODO figure out the most readable way of doing this
-                }
+                
+                //TODO figure out the most readable way of doing this
             }
         };
 
