@@ -40,7 +40,7 @@ namespace GameLogic.Engine
             SeedPieces();
         }
 
-        internal void ForceCurrentPlayer(PlayerColour c) => _state.CurrentPlayer = c;
+        public void ForceCurrentPlayer(PlayerColour c) => _state.CurrentPlayer = c; //temp, Get better at testing my guy
 
         /*------------------------------------------------------------------------*/
         /*  Public API (called by controllers or unit tests)                      */
